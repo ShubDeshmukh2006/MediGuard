@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}MediCheck{% endblock %}</title>
+<style>
+  :root {
+    --green: #1e7a46; --green-bg:#e8f7ee;
+    --yellow: #9a6b00; --yellow-bg:#fff6e0;
+    --red: #a3282f; --red-bg:#fdeaec;
+    --blue:#2454a8; --blue-bg:#eaf1fb;
+    --ink:#1f2430; --muted:#5b6472; --card:#ffffff; --bg:#f4f6f9; --border:#e2e6ec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); margin:0; line-height:1.5;
+  }
+  header { background:#12233f; color:#fff; padding: 18px 24px; }
+  header .wrap { max-width: 880px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+  header a { color:#fff; text-decoration:none; font-weight:700; font-size:1.25rem; }
+  nav a { color:#cfe0ff; text-decoration:none; margin-left:18px; font-size:.95rem; }
+  nav a:hover { color:#fff; }
+  .disclaimer {
+    background:#fff3cd; color:#7a5b00; padding:10px 24px; font-size:.85rem; text-align:center;
+    border-bottom:1px solid #f0dca0;
+  }
+  main { max-width: 880px; margin: 32px auto; padding: 0 20px 60px; }
+  .card { background: var(--card); border:1px solid var(--border); border-radius:14px; padding: 24px; margin-bottom:20px; }
+  h1 { font-size:1.6rem; margin-top:0; }
+  h2 { font-size:1.2rem; }
+  .muted { color: var(--muted); font-size:.9rem; }
+  form.search { display:flex; gap:10px; flex-wrap:wrap; }
+  input[type=text] {
+    flex:1; min-width:180px; padding:12px 14px; border-radius:10px; border:1px solid var(--border); font-size:1rem;
+  }
+  button {
+    background:#12233f; color:#fff; border:none; padding:12px 20px; border-radius:10px; font-size:1rem;
+    cursor:pointer; font-weight:600;
+  }
+  button:hover { background:#1a3560; }
+  .badge { display:inline-block; padding:5px 14px; border-radius:999px; font-weight:700; font-size:.85rem; }
+  .badge-safe { background:var(--green-bg); color:var(--green); }
+  .badge-caution { background:var(--yellow-bg); color:var(--yellow); }
+  .badge-avoid { background:var(--red-bg); color:var(--red); }
+  .badge-unknown { background:var(--blue-bg); color:var(--blue); }
+  .tag { display:inline-block; background:#eef1f6; color:#40495a; padding:3px 10px; border-radius:8px; font-size:.78rem; margin-left:6px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:600px){ .grid2 { grid-template-columns:1fr; } }
+  .home-links { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:20px; }
+  @media (max-width:600px){ .home-links { grid-template-columns:1fr; } }
+  .home-links a {
+    display:block; text-decoration:none; background:#fff; border:1px solid var(--border); border-radius:14px;
+    padding:22px; color:var(--ink);
+  }
+  .home-links a:hover { border-color:#12233f; }
+  .home-links h3 { margin:0 0 6px; }
+  .notice { border-left:4px solid var(--blue); background:var(--blue-bg); padding:14px 16px; border-radius:8px; font-size:.9rem; }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a href="{% url 'home' %}">💊 MediCheck</a>
+    <nav>
+      <a href="{% url 'medicine_lookup' %}">Single Medicine</a>
+      <a href="{% url 'interaction_check' %}">Check Two Together</a>
+    </nav>
+  </div>
+</header>
+<div class="disclaimer">
+  ⚠️ Educational demo only — not medical advice. Always consult a doctor or pharmacist before taking or combining medicines.
+</div>
+<main>
+  {% block content %}{% endblock %}
+</main>
+<footer>MediCheck — demo project. Data is a mix of curated sample entries and AI-generated content, clearly labeled.</footer>
+</body>
+</html>

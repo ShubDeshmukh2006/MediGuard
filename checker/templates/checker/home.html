@@ -1,0 +1,27 @@
+{% extends "checker/base.html" %}
+{% block title %}MediCheck — Home{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Not sure what a medicine is for, or safe to combine?</h1>
+  <p class="muted">
+    Look up a single tablet to see what it's used for and its side effects, or check
+    two medicines together to see the risk of taking them at the same time.
+  </p>
+  {% if ai_on %}
+    <div class="notice">🤖 AI recognition is <strong>ON</strong> — unknown medicine names will be looked up live via Claude.</div>
+  {% else %}
+    <div class="notice">ℹ️ AI recognition is <strong>OFF</strong> (no ANTHROPIC_API_KEY set) — only the local sample database will be used.</div>
+  {% endif %}
+</div>
+
+<div class="home-links">
+  <a href="{% url 'medicine_lookup' %}">
+    <h3>🔍 Single Medicine</h3>
+    <p class="muted">Enter a medicine name to see what it's used for and its side effects.</p>
+  </a>
+  <a href="{% url 'interaction_check' %}">
+    <h3>⚗️ Check Two Together</h3>
+    <p class="muted">Enter two medicine names to see combined side effects and whether it's safe to take them at the same time.</p>
+  </a>
+</div>
+{% endblock %}

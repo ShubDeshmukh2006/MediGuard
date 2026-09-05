@@ -1,0 +1,46 @@
+{% extends "checker/base.html" %}
+{% block title %}Single Medicine — MediCheck{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>What is this medicine for?</h1>
+  <form class="search" method="get">
+    <input type="text" name="q" placeholder="e.g. Paracetamol, Ibuprofen..." value="{{ query }}" autofocus>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+{% if query %}
+  {% if medicine %}
+    <div class="card">
+      <h2>{{ medicine.name }}
+        {% if medicine.category %}<span class="tag">{{ medicine.category }}</span>{% endif %}
+        {% if medicine.requires_prescription %}<span class="tag">Prescription required</span>{% endif %}
+        {% if ai_generated %}<span class="tag">🤖 AI-generated</span>{% endif %}
+      </h2>
+      {% if medicine.brand_names %}<p class="muted">Also known as: {{ medicine.brand_names }}</p>{% endif %}
+
+      <h3>What it's used for</h3>
+      <p>{{ medicine.used_for }}</p>
+
+      {% if medicine.common_side_effects %}
+        <h3>Common side effects</h3>
+        <p>{{ medicine.common_side_effects }}</p>
+      {% endif %}
+
+      {% if medicine.serious_side_effects %}
+        <h3>⚠️ Serious side effects — seek medical help if these occur</h3>
+        <p>{{ medicine.serious_side_effects }}</p>
+      {% endif %}
+    </div>
+  {% elif not_found %}
+    <div class="card">
+      <div class="notice">
+        We couldn't identify "<strong>{{ query }}</strong>" as a known medicine
+        {% if not ai_on %}(AI lookup is currently off).{% else %}even after checking with AI.{% endif %}
+        Please double check the spelling, or ask a pharmacist directly — never take an
+        unidentified tablet.
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+{% endblock %}

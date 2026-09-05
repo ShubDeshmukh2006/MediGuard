@@ -1,0 +1,64 @@
+{% extends "checker/base.html" %}
+{% block title %}Check Two Medicines — MediCheck{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Taking two tablets at the same time?</h1>
+  <p class="muted">Enter both medicine names to see the combined side effects and whether it's advisable to take them together.</p>
+  <form class="search" method="get">
+    <input type="text" name="med1" placeholder="First medicine (e.g. Aspirin)" value="{{ name1 }}">
+    <input type="text" name="med2" placeholder="Second medicine (e.g. Warfarin)" value="{{ name2 }}">
+    <button type="submit">Check</button>
+  </form>
+</div>
+
+{% if lookup_failed %}
+  <div class="card">
+    <div class="notice">
+      Couldn't identify: <strong>{{ missing|join:", " }}</strong>
+      {% if not ai_on %}(AI lookup is currently off — only sample data is available).{% else %}even after checking with AI.{% endif %}
+      Please check the spelling, or ask a pharmacist directly.
+    </div>
+  </div>
+{% elif med1 and med2 %}
+  <div class="card">
+    <div class="grid2">
+      <div><h3>{{ med1.name }}</h3><p class="muted">{{ med1.used_for|truncatewords:20 }}</p></div>
+      <div><h3>{{ med2.name }}</h3><p class="muted">{{ med2.used_for|truncatewords:20 }}</p></div>
+    </div>
+  </div>
+
+  {% if interaction %}
+    <div class="card">
+      <h2>
+        {% if interaction.severity == "safe" %}
+          <span class="badge badge-safe">✅ Generally Safe</span>
+        {% elif interaction.severity == "caution" %}
+          <span class="badge badge-caution">⚠️ Use With Caution</span>
+        {% else %}
+          <span class="badge badge-avoid">⛔ Avoid Combination</span>
+        {% endif %}
+        {% if ai_generated %}<span class="tag">🤖 AI-generated</span>{% endif %}
+      </h2>
+
+      <h3>What happens if taken together</h3>
+      <p>{{ interaction.combined_effects }}</p>
+
+      <h3>Why (explanation)</h3>
+      <p>{{ interaction.explanation }}</p>
+
+      <h3>Advice — should you take them together?</h3>
+      <p>{{ interaction.advice }}</p>
+    </div>
+  {% elif no_data %}
+    <div class="card">
+      <span class="badge badge-unknown">❔ No Data Available</span>
+      <p style="margin-top:14px;">
+        We don't have reliable information on combining <strong>{{ med1.name }}</strong> and
+        <strong>{{ med2.name }}</strong>{% if not ai_on %} (AI lookup is currently off){% endif %}.
+        <strong>Do not assume this means it's safe.</strong> Please consult a doctor or
+        pharmacist before taking these two medicines together.
+      </p>
+    </div>
+  {% endif %}
+{% endif %}
+{% endblock %}
