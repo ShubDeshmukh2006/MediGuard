@@ -117,4 +117,4 @@ def interaction_check(request):
     context["ai_generated"] = ai_generated
     context["no_data"] = interaction is None
 
-    return render(request, "checker/interaction_check.html", context)
+    return render(request, "checker/interaction_check.html",context)
