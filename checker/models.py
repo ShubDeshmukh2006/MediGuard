@@ -16,7 +16,7 @@ class Medicine(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
+    class Meta :
         ordering = ["name"]
 
     def __str__(self):
